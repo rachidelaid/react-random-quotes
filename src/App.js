@@ -19,13 +19,13 @@ const App = () => {
     }
   }
 
-  async function getImage(orien) {
+  async function getImage(w,h) {
+    const rdnNum = new Date().getTime();
     const response = await fetch(
-      "https://api.unsplash.com/photos/random?orientation="+orien+"&client_id=gK52De2Tm_dL5o1IXKa9FROBAJ-LIYqR41xBdlg3X2k"
+      `https://source.unsplash.com/collection/645558/${w}x${h}/?sig=${rdnNum}`
     );
-    const data = await response.json();
     if (response.ok) {
-      const link = data.urls.regular;
+      const link = response.url;
 
       const slidingTagLiAfterStyle = document.createElement("style");
       slidingTagLiAfterStyle.innerHTML = `body:before {
@@ -36,13 +36,9 @@ const App = () => {
   }
 
   useEffect(() => {
-    const width = window.innerWidth;
-
-    if (width <= 600) {
-      getImage("portrait");
-    } else {
-      getImage("landscape");
-    }
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    getImage(w,h);
 
     getQuote();
   }, []);
